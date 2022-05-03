@@ -14,7 +14,7 @@
     "start": "npx nodemon ./server.js",
     "clean": "rm -rf datastore/data/* datastore/counter.txt",
     "lint": "eslint ./",
-    "test": "mocha test"
+    "test": "mocha -c test | less -R"
   },
   "dependencies": {
     "bluebird": "^3.7.2",

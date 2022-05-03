@@ -38,9 +38,23 @@ const writeCounter = (count, callback) => {
 
 // Public API - Fix this function //////////////////////////////////////////////
 
-exports.getNextUniqueId = () => {
-  counter = counter + 1;
-  return zeroPaddedNumber(counter);
+exports.getNextUniqueId = (callback) => {
+
+  //read the file, readCounter
+  readCounter((error, counter) => { //XXXX need to add the parameters for the anon function in the tests......, no return value
+    //if the file has errors, console.log
+    if (error) {
+      console.log('Error in readCounter: ', error);
+    } else { //else write on the file, writeCounter
+      writeCounter(counter + 1, (error, counterString) => { //XXXX need to add the parameters for the anon function in the tests......
+        if (error) { //if write function return error, console.log
+          console.error('error in writeCounter is:', error)
+        } else { //else use the callback and update the value
+          callback(error, counterString)
+        }
+      })
+    }
+  });
 };
 
 
