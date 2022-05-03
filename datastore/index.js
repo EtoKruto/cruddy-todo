@@ -66,29 +66,45 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  exports.readOne(id, (error, dataObject) => {
+  fs.readFile(`/Users/Robert/Desktop/Hackreactor/Course/rfp2204-cruddy-todo/test/testData/${id}.txt`,'utf8', (error, data) => {
     if (error) {
-      callback(err, undefined);
+      // console.log("err: ", error);
+      callback(error, undefined);
     } else {
-      console.log("dataObject: ", dataObject);
+      // console.log("data: ", data);
+      // console.log("exports.dataDir}/${id}.txt", `${exports.dataDir}/${id}.txt`)
+      fs.writeFile(`${exports.dataDir}/${id}.txt`, text, (err) => {
+        if (err) {
+          callback(err, undefined);
+        } else {
+          callback(null, { id, text: text });
+        }
+      })
     }
 
-
-
-
-  })
+  });
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+  fs.readFile(`/Users/Robert/Desktop/Hackreactor/Course/rfp2204-cruddy-todo/test/testData/${id}.txt`,'utf8', (error, data) => {
+    if (error) {
+      callback(error, undefined);
+    } else {
+      fs.unlink(`/Users/Robert/Desktop/Hackreactor/Course/rfp2204-cruddy-todo/test/testData/${id}.txt`, (err, data) => {
+        if (err) {
+          // console.log(err);
+          callback(err);
+        } else {
+          console.log('Deleted');
+          callback(err);
+        }
+      });
+    }
+  });
 };
+
+
+// fs.unlink(filePath, callbackFunction);
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
 

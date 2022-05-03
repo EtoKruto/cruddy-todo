@@ -201,6 +201,7 @@ describe('todos', () => {
     it('should not change the counter', (done) => {
       todos.delete('00001', (err) => {
         const counterFileContents = fs.readFileSync(counter.counterFile).toString();
+        console.log(counterFileContents);
         expect(counterFileContents).to.equal('00001');
         done();
       });
