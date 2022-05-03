@@ -38,56 +38,11 @@ exports.readAll = (callback) => {
       console.log("Houston we have an error reading directory")
       return arrOfTodoObjects;
     } else {
-      // console.log(files)
-      // arrOfTodoObjects = files.map(file, () => {
-      //   fs.readFile(file, (error, fileData) => {
-      //     if (err) {
-      //       console.log('halp me')
-      //     } else {
-      //       console.log("fileData", fileData)
-      //       console.log("file", file)
 
-      //       return { text: fileData, id: file };
-      //     }
-      //   })
-      // });
 
       files.forEach((file, index) => {
-        //splice up to the dot (split('.'))
         let fileName = file.split('.')
-        // console.log('URI:', `${exports.dataDir}/${fileName[0]}.txt`);
         arrOfTodoObjects.push({id: fileName[0], text: fileName[0]});
-
-        // fs.readFile(`${exports.dataDir}/${fileName[0]}.txt`, "utf8", (err, fileData) => {
-        //   if (err) {
-        //     console.log('error reading file');
-        //   } else {
-        //     // callback(null, Number(fileData));
-        //     console.log("fileName[0]", fileName[0])
-        //     console.log("file", fileData)
-
-        //     console.log("Object", {id: fileName[0], text: fileData});
-        //     // arrOfTodoObjects.push({id: fileName[0], text: fileData});
-        //     arrOfTodoObjects.push(fileData);
-
-        //   }
-        // });
-
-        // console.log("arrOfTodoObjects to be returned ",arrOfTodoObjects);
-
-
-
-
-
-        // counter.readCounter((error, fileData) => {
-        //   if (error) {
-        //     throw('readCounter Error in readAll');
-        //   } else {
-        //     console.log(fileData);
-        //     arrOfTodoObjects.push({id: fileName[0], text: fileData});
-        //     console.log(arrOfTodoObjects);
-        //   }
-        // });
       });
 
 
@@ -97,29 +52,31 @@ exports.readAll = (callback) => {
 
   });
 
-  // console.log("arrOfTodoObjects to be returned ", arrOfTodoObjects);
-
-  // return arrOfTodoObjects;
 
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  fs.readFile(`/Users/Robert/Desktop/Hackreactor/Course/rfp2204-cruddy-todo/test/testData/${id}.txt`, 'utf8', (err, data) => {
+    if (err) {
+      callback(err, undefined);
+    } else {
+      callback(null, { id, text: data });
+    }
+  });
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  exports.readOne(id, (error, dataObject) => {
+    if (error) {
+      callback(err, undefined);
+    } else {
+      console.log("dataObject: ", dataObject);
+    }
+
+
+
+
+  })
 };
 
 exports.delete = (id, callback) => {
@@ -142,3 +99,52 @@ exports.initialize = () => {
     fs.mkdirSync(exports.dataDir);
   }
 };
+
+
+
+// console.log(files)
+// arrOfTodoObjects = files.map(file, () => {
+//   fs.readFile(file, (error, fileData) => {
+//     if (err) {
+//       console.log('halp me')
+//     } else {
+//       console.log("fileData", fileData)
+//       console.log("file", file)
+
+//       return { text: fileData, id: file };
+//     }
+//   })
+// });
+
+
+
+// fs.readFile(`${exports.dataDir}/${fileName[0]}.txt`, "utf8", (err, fileData) => {
+//   if (err) {
+//     console.log('error reading file');
+//   } else {
+//     // callback(null, Number(fileData));
+//     console.log("fileName[0]", fileName[0])
+//     console.log("file", fileData)
+
+//     console.log("Object", {id: fileName[0], text: fileData});
+//     // arrOfTodoObjects.push({id: fileName[0], text: fileData});
+//     arrOfTodoObjects.push(fileData);
+
+//   }
+// });
+
+// console.log("arrOfTodoObjects to be returned ",arrOfTodoObjects);
+
+
+
+
+
+// counter.readCounter((error, fileData) => {
+//   if (error) {
+//     throw('readCounter Error in readAll');
+//   } else {
+//     console.log(fileData);
+//     arrOfTodoObjects.push({id: fileName[0], text: fileData});
+//     console.log(arrOfTodoObjects);
+//   }
+// });
